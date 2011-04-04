@@ -29,8 +29,14 @@ Hadean::Application.configure do
   #config.cache_store = :dalli_store
   #config.cache_store = :mem_cache_store, "localhost" #'localhost:11211'
   # Don't care if the mailer can't send
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+
+  config.action_mailer.smtp_settings = {
+    :address => "127.0.0.1",
+    :port => 1025,
+    :delivery_method => "smtp"
+  }
 
 
   config.after_initialize do

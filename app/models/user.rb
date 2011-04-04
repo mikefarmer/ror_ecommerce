@@ -110,7 +110,8 @@ class User < ActiveRecord::Base
     state :canceled
 
     event :activate do
-      transition :from => :inactive,    :to => :active
+      # Brute force to active!
+      transition all => :active, :unless => :active?
     end
 
     event :register do
@@ -311,6 +312,7 @@ class User < ActiveRecord::Base
     reset_perishable_token!
     Notifier.password_reset_instructions(self).deliver
   end
+
 
   private
 
