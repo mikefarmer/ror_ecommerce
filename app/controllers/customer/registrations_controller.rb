@@ -10,15 +10,12 @@ class Customer::RegistrationsController < ApplicationController
     # Saving without session maintenance to skip
     # auto-login which can't happen here because
     # the User has not yet been activated
-    Rails.logger.debug "HELLO!"
     if @user.save_without_session_maintenance
-      Rails.logger.debug 'SAVED!!' 
       @user.deliver_activation_instructions!
       UserSession.new(@user.attributes)
       flash[:notice] = "Your account has been created. Please check your e-mail for your account activation instructions!"
       redirect_to root_url
     else
-      Rails.logger.debug "ERRORS: #{@user.errors.full_messages}"
       flash[:error] = "There was a problem logging you in. Try again."
       @user_session = UserSession.new
       render :action => :new
