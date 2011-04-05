@@ -135,7 +135,6 @@ class Payment < ActiveRecord::Base
             result.test       = response.test?
           rescue ActiveMerchant::ActiveMerchantError => e
             #puts e
-            Rails.logger.debug "PROCESSING ERRROR: #{e.message}"
             result.success = false
             result.confirmation_id = nil
             result.message = e.message
