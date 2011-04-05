@@ -12,6 +12,7 @@ class Shopping::OrdersController < Shopping::BaseController
     #current or in-progress otherwise cart (unless cart is empty)
     @order = find_or_create_order
     if f = next_form(@order)
+      Rails.logger.debug "NEXT FORM #{f}"
       session_cart.add_items_to_checkout(@order)
       redirect_to f
     else
@@ -69,6 +70,7 @@ class Shopping::OrdersController < Shopping::BaseController
           session_cart.mark_items_purchased(@order)
           redirect_to myaccount_order_path(@order)
         else
+          Rails.logger.debug "CC RESPONSE: #{response}"
           flash[:error] = "Could not process the Order."
           render :action => "index"
         end
@@ -78,7 +80,7 @@ class Shopping::OrdersController < Shopping::BaseController
         render :action => 'index'
       end
     else
-      flash[:error] = "Credit Card is not valid."
+      flash[:error] = "Credit Card is not valid. #{@credit_card.errors.full_messages.join(" ")}"
       render :action => 'index'
     end
   end

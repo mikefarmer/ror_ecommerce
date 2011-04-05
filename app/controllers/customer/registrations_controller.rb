@@ -30,7 +30,14 @@ class Customer::RegistrationsController < ApplicationController
 
     @user = User.find_by_access_token params[:a]
     if @user && @user.activate
-      UserSession.create(@user, true) 
+      @user_session = UserSession.create(@user, true) 
+      # This is copied from the UserSessions#create action. There is probably a more DRY way to do this.
+      cookies[:hadean_uid] = @user_session.record.access_token
+      session[:authenticated_at] = Time.now
+      
+      ## if there is a cart make sure the user_id is correct
+      #set_user_to_cart_items
+      
       flash[:notice] = "Welcome back #{@user.name}"
     else
       flash[:notice] = "Invalid Activation URL!"

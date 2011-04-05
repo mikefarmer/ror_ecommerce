@@ -19,11 +19,14 @@ class Shopping::BaseController < ApplicationController
 
        ## If we are insecure
     elsif not_secure?
+      Rails.logger.debug "NOT SECURE!!!"
       session[:return_to] = shopping_orders_url
       return login_url()
     elsif session_order.ship_address_id.nil?
+      Rails.logger.debug "SHIPPING ADDRESS INVALID"
       return shopping_addresses_url()
     elsif session_order.order_items.any?{ |item| item.shipping_rate_id.nil? }
+      Rails.logger.debug "NO SHIPPING METHOD SELECTED"
       return shopping_shipping_methods_url()
     end
   end
