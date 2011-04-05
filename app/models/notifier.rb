@@ -9,7 +9,6 @@ class Notifier < ActionMailer::Base
   def signup_notification(recipient)
     @account = recipient
 
-    Rails.logger.debug "ACCOUNT: #{@account.inspect}"
     #attachments['an-image.jp'] = File.read("an-image.jpg")
     #attachments['terms.pdf'] = {:content => generate_your_pdf_here() }
 
