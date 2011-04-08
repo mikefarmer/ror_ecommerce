@@ -12,12 +12,10 @@ class Notifier < ActionMailer::Base
     #attachments['an-image.jp'] = File.read("an-image.jpg")
     #attachments['terms.pdf'] = {:content => generate_your_pdf_here() }
 
-    activation_url =  activate_url(:a => @account.access_token)
-
     mail(:to => recipient.email_address_with_name,
          :subject => "New account information") do |format|
-      format.text { render :text => "Welcome!  #{recipient.name} go to #{activation_url}" }
-      format.html { render :text => "<h1>Welcome</h1> #{recipient.name} <a href='#{activation_url}'>Click to Activate</a> " }
+      format.text { render :text => "Welcome!  #{recipient.name} go to #{customer_activation_url(:a => recipient.perishable_token )}" }
+      format.html { render :text => "<h1>Welcome</h1> #{recipient.name} <a href='#{customer_activation_url(:a => recipient.perishable_token )}'>Click to Activate</a>" }
     end
 
   end

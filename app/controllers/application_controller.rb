@@ -51,14 +51,18 @@ class ApplicationController < ActionController::Base
   end
 
   def secure_session
-    if Rails.env == 'production' || is_production_simulation
-      if session_cart && !request.ssl?
-        cookies[:insecure] = true
+    if defined? ALLOW_INSECURE_TRANSACTIONS && ALLOW_INSECURE_TRANSACTIONS
+      cookies[:insecure] = false
+    else
+      if Rails.env == 'production' || is_production_simulation
+        if session_cart && !request.ssl?
+          cookies[:insecure] = true
+        else
+          cookies[:insecure] = false
+        end
       else
         cookies[:insecure] = false
       end
-    else
-      cookies[:insecure] = false
     end
   end
 

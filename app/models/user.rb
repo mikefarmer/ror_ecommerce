@@ -110,7 +110,6 @@ class User < ActiveRecord::Base
     state :canceled
 
     event :activate do
-      # Brute force to active!
       transition all => :active, :unless => :active?
     end
 
