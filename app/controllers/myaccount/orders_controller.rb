@@ -12,7 +12,8 @@ class Myaccount::OrdersController < Myaccount::BaseController
   # GET /myaccount/orders/1
   # GET /myaccount/orders/1.xml
   def show
-    @order = current_user.completed_orders.includes([:invoices]).find(params[:id])
+    #@order = current_user.completed_orders.includes([:invoices]).find(params[:id])
+    @order = current_user.orders.includes([:invoices]).find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb

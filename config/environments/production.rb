@@ -36,7 +36,7 @@ Hadean::Application.configure do
   # config.action_controller.asset_host = "http://assets.example.com"
 
   # Disable delivery errors, bad email addresses will be ignored
-  # config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   # Enable threaded mode
   # config.threadsafe!
@@ -47,6 +47,14 @@ Hadean::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  config.action_mailer.smtp_settings = {
+    :address => "127.0.0.1",
+    :port => 25,
+    :delivery_method => "smtp"
+  }
+
+  config.action_mailer.default_url_options = { :host => 'v320.spreecamps.com' }
 
 
   config.after_initialize do
@@ -72,6 +80,11 @@ Hadean::Application.configure do
       :password => HADEAN_CONFIG['authnet']['password'],
       :test     => true
     )
+
+    # This is a modification to the local install of rore
+    # I'm adding it here so that we can still use the cart
+    # without runnin in SSL
+    ::ALLOW_INSECURE_TRANSACTIONS = true
 
     #::GATEWAY = ActiveMerchant::Billing::BraintreeGateway.new(
     #  :login     => HADEAN_CONFIG['braintree']['login'],

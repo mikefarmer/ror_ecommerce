@@ -6,7 +6,11 @@ class Customer::ActivationsController < ApplicationController
   def show
     @user = User.find_by_perishable_token(params[:a])
     if @user && @user.activate!
-      UserSession.create(@user, true)
+      @user_session = UserSession.create(@user, true) 
+      # This is copied from the UserSessions#create action. There is probably a more DRY way to do this.
+      cookies[:hadean_uid] = @user_session.record.access_token
+      session[:authenticated_at] = Time.now
+
       flash[:notice] = "Welcome back #{@user.name}"
     else
       flash[:notice] = "Invalid Activation URL!"
