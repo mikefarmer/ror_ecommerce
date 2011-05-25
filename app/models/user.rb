@@ -111,6 +111,7 @@ class User < ActiveRecord::Base
 
     event :activate do
       transition all => :active, :unless => :active?
+      #transition :from => :inactive,    :to => :active
     end
 
     event :register do
@@ -312,7 +313,6 @@ class User < ActiveRecord::Base
     Notifier.password_reset_instructions(self).deliver
   end
 
-
   private
 
   def start_store_credits
@@ -349,3 +349,4 @@ class User < ActiveRecord::Base
     self.access_token = ActiveSupport::SecureRandom::hex(9+rand(6)) if new_record? and access_token.nil?
   end
 end
+
